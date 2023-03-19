@@ -1,7 +1,19 @@
-# python3
-# Keita Matvijuka 221RDB506 13. Grupa
+import heapq
+from typing import List, Tuple
 
-def heapify(data, n, i, swaps):
+def parallel_processing(n: int, m: int, data: List[int]) -> List[Tuple[int, int]]:
+    output = []
+    threads = [(0, i) for i in range(n)]
+    heapq.heapify(threads)
+
+    for job_time in data:
+        time, thread_index = heapq.heappop(threads)
+        output.append((thread_index, time))
+        heapq.heappush(threads, (time + job_time, thread_index))
+
+    return output
+
+def sift_down(data: List[int], n: int, i: int, swaps: List[Tuple[int, int]]) -> None:
     largest = i
     left = 2 * i + 1
     right = 2 * i + 2
@@ -15,18 +27,18 @@ def heapify(data, n, i, swaps):
     if largest != i:
         swaps.append((i, largest))
         data[i], data[largest] = data[largest], data[i]
-        heapify(data, n, largest, swaps)
+        sift_down(data, n, largest, swaps)
 
-def build_heap(data):
+def build_heap(data: List[int]) -> List[Tuple[int, int]]:
     swaps = []
+    n = len(data)
     for i in range(n // 2 - 1, -1, -1):
-        heapify(data, n, i, swaps)
+        sift_down(data, n, i, swaps)
 
     for i in range(n - 1, 0, -1):
         swaps.append((0, i))
         data[0], data[i] = data[i], data[0]
-        heapify(data, i, 0, swaps)
-
+        sift_down(data, i, 0, swaps)
 
     return swaps
 
@@ -37,12 +49,11 @@ def main():
     # add another input for I or F 
     # first two tests are from keyboard, third test is from a file
 
-
     # input from keyboard
     n = int(input())
     data = list(map(int, input().split()))
 
-    # checks if lenght of data is the same as the said lenght
+    # checks if length of data is the same as the said length
     assert len(data) == n
 
     # calls function to assess the data 
@@ -52,12 +63,15 @@ def main():
     # TODO: output how many swaps were made, 
     # this number should be less than 4n (less than 4*len(data))
 
-
     # output all swaps
     print(len(swaps))
     for i, j in swaps:
         print(i, j)
 
+    # Sample usage of parallel_processing function
+    result = parallel_processing(n, 2, data)
+    for res in result:
+        print(res[0], res[1])
 
 if __name__ == "__main__":
     main()

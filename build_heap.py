@@ -1,3 +1,5 @@
+# 221RDB506 Keita Matvijuka 13. Grupa
+
 import heapq
 
 def build_heap(data):

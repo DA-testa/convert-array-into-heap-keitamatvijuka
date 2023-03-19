@@ -1,27 +1,20 @@
 import heapq
 
 def build_heap(data):
-    n = len(data)
     swaps = []
-    for i in range(n//2-1, -1, -1):
-        heapify_down(data, n, i, swaps)
+    n = len(data)
+    for i in range(n // 2 - 1, -1, -1):
+        current, left_child, right_child = i, 2*i+1, 2*i+2
+        while left_child < n:
+            smallest_child = left_child if (right_child >= n or data[left_child] < data[right_child]) else right_child
+            if data[current] > data[smallest_child]:
+                swaps.append((current, smallest_child))
+                data[current], data[smallest_child] = data[smallest_child], data[current]
+                current, left_child, right_child = smallest_child, 2*smallest_child+1, 2*smallest_child+2
+            else:
+                break
     return swaps
 
-def heapify_down(data, n, i, swaps):
-    largest = i
-    left = 2*i + 1
-    right = 2*i + 2
-    
-    if left < n and data[left] > data[largest]:
-        largest = left
-        
-    if right < n and data[right] > data[largest]:
-        largest = right
-        
-    if largest != i:
-        swaps.append((i, largest))
-        data[i], data[largest] = data[largest], data[i]
-        heapify_down(data, n, largest, swaps)
 
 def main(): 
     Input = input() 

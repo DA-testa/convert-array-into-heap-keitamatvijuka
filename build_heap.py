@@ -44,36 +44,31 @@ def build_heap(data: List[int]) -> List[Tuple[int, int]]:
 
 
 def main():
-    # read input
-    n = None
-    data = []
-    for line in sys.stdin:
-        line = line.strip()
-        if not line:
-            continue
-        if n is None:
-            # read number of elements
-            n = int(line)
-        else:
-            # read elements
-            data += list(map(int, line.split()))
+    
+    # TODO : add input and corresponding checks
+    # add another input for I or F 
+    # first two tests are from keyboard, third test is from a file
 
-    # check input
-    assert n is not None
+    # input from keyboard
+    n, m = map(int, input().split())
+    data = list(map(int, input().split()))
+
+    # checks if length of data is the same as the said length
     assert len(data) == n
 
-    # call function to assess the data and give back all swaps
+    # calls function to assess the data 
+    # and give back all swaps
     swaps = build_heap(data)
 
-    # output how many swaps were made (should be less than 4n)
-    assert len(swaps) <= 4 * n
-    print(len(swaps))
+    # TODO: output how many swaps were made, 
+    # this number should be less than 4n (less than 4*len(data))
 
     # output all swaps
+    print(len(swaps))
     for i, j in swaps:
         print(i, j)
 
-    # sample usage of parallel_processing function
+    # Sample usage of parallel_processing function
     result = parallel_processing(n, 2, data)
     for res in result:
         print(res[0], res[1])

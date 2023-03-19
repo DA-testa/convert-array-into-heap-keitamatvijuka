@@ -23,7 +23,6 @@ def heapify_down(data, n, i, swaps):
         data[i], data[largest] = data[largest], data[i]
         heapify_down(data, n, largest, swaps)
 
-
 def main(): 
     Input = input() 
     if "I" in Input:

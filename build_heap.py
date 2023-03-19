@@ -1,34 +1,47 @@
 import heapq
 
+def build_heap(data):
+    n = len(data)
+    swaps = []
+    for i in range(n//2-1, -1, -1):
+        heapify_down(data, n, i, swaps)
+    return swaps
 
-def parallel_processing(n, m, data):
-    output = []
-    threads = [(0, i) for i in range(n)]
-    heapq.heapify(threads)
-
-    for job_time in data:
-        time, thread_index = heapq.heappop(threads)
-        output.append((thread_index, time))
-        heapq.heappush(threads, (time + job_time, thread_index))
-
+def heapify_down(data, n, i, swaps):
+    largest = i
+    left = 2*i + 1
+    right = 2*i + 2
     
+    if left < n and data[left] > data[largest]:
+        largest = left
+        
+    if right < n and data[right] > data[largest]:
+        largest = right
+        
+    if largest != i:
+        swaps.append((i, largest))
+        data[i], data[largest] = data[largest], data[i]
+        heapify_down(data, n, largest, swaps)
 
-    return output
 
+def main(): 
+    Input = input() 
+    if "I" in Input:
+        n = int(input())
+        data = list(map(int, input().split()))
+        assert len(data) == n
 
-
-
-def main():
-    
-    # input from keyboard
-    n, m = map(int, input().split())
-    data = list(map(int, input().split()))
-
-
-    # Sample usage of parallel_processing function
-    result = parallel_processing(n, m, data)
-    for res in result:
-        print(res[0], res[1])
+    if "F" in Input:  
+        filepath = "tests/" + input() 
+        with open(filepath, 'r') as file:
+            n = int(file.readline().strip())
+            data = list(map(int, file.readline().strip().split()))
+            assert len(data) == n
+            
+    swaps = build_heap(data)
+    print(len(swaps))
+    for i, j in swaps:
+        print(i, j)
 
 if __name__ == "__main__":
     main()

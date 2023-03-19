@@ -1,10 +1,31 @@
 # python3
+# Keita Matvijuka 221RDB506 13. Grupa
 
+def heapify(data, n, i, swaps):
+    largest = i
+    left = 2 * i + 1
+    right = 2 * i + 2
+
+    if left < n and data[left] > data[largest]:
+        largest = left
+
+    if right < n and data[right] > data[largest]:
+        largest = right
+
+    if largest != i:
+        swaps.append((i, largest))
+        data[i], data[largest] = data[largest], data[i]
+        heapify(data, n, largest, swaps)
 
 def build_heap(data):
     swaps = []
-    # TODO: Creat heap and heap sort
-    # try to achieve  O(n) and not O(n2)
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(data, n, i, swaps)
+
+    for i in range(n - 1, 0, -1):
+        swaps.append((0, i))
+        data[0], data[i] = data[i], data[0]
+        heapify(data, i, 0, swaps)
 
 
     return swaps

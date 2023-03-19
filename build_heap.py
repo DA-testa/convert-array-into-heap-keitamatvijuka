@@ -1,7 +1,7 @@
 import heapq
 from typing import List, Tuple
 
-def parallel_processing(n: int, m: int, data: List[int]) -> List[Tuple[int, int]]:
+def parallel_processing(n: int, m: int, data: List[int], processing_type: str) -> List[Tuple[int, int]]:
     output = []
     threads = [(0, i) for i in range(n)]
     heapq.heapify(threads)
@@ -10,6 +10,11 @@ def parallel_processing(n: int, m: int, data: List[int]) -> List[Tuple[int, int]
         time, thread_index = heapq.heappop(threads)
         output.append((thread_index, time))
         heapq.heappush(threads, (time + job_time, thread_index))
+
+    if processing_type == "I":
+        output.sort(key=lambda x: x[1])
+    elif processing_type == "F":
+        output.reverse()
 
     return output
 
@@ -44,14 +49,11 @@ def build_heap(data: List[int]) -> List[Tuple[int, int]]:
 
 
 def main():
+    processing_type = input("Enter processing type (I for increasing, F for decreasing): ")
     
-    # TODO : add input and corresponding checks
-    # add another input for I or F 
-    # first two tests are from keyboard, third test is from a file
-
     # input from keyboard
-    n, m = map(int, input().split())
-    data = list(map(int, input().split()))
+    n, m = map(int, input("Enter n and m: ").split())
+    data = list(map(int, input("Enter space-separated integers: ").split()))
 
     # checks if length of data is the same as the said length
     assert len(data) == n
@@ -69,7 +71,7 @@ def main():
         print(i, j)
 
     # Sample usage of parallel_processing function
-    result = parallel_processing(n, 2, data)
+    result = parallel_processing(n, m, data, processing_type)
     for res in result:
         print(res[0], res[1])
 
